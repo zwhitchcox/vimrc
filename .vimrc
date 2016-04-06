@@ -6,32 +6,39 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let g:NERDTreeDirArrows=0
 
-inoremap {<Tab> {<CR>}<Esc>O<Tab>
-inoremap [<Tab> [<CR>]<Esc>O<Tab>
+inoremap {<Tab> {}<Left>
+inoremap {<Tab><Tab> {<CR>}<Esc>O<Tab>
+inoremap [<Tab> []<Left>
+inoremap [<Tab><Tab> [<CR>]<Esc>O<Tab>
 inoremap (<Tab> ()<Left>
+inoremap (<Tab><Tab> (<CR>)<Esc>O<Tab>
 inoremap <C-u> <Esc>O<Tab>
-inoremap <C-h> <Esc>jo
+inoremap <C-h> <Esc>jA
+
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
 
 imap <C-p> <C-n>
 map <C-A-w> <C-w>
-
-scriptencoding utf-8
-set encoding=utf-8
 
 " Persistent Undo
 set undofile 
 set undodir=~/.vim/undodir
 
-" multiple cursors
-nnoremap <C-k> :call multiple_cursors#new('v',0)<CR>
-vnoremap <C-k> :call multiple_cursors#new('v',0)<CR>
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+inoremap </<Space> </<C-X><C-O>
+inoremap </<Tab> </<C-X><C-O><Esc>F<i
+inoremap </<Tab><Tab> </<C-X><C-O><Esc>F<i<CR><Esc>O<Tab>
 
 " preferences
 set tabstop=2
 set autoindent
 set nu
 set shiftwidth=2
-
+set expandtab
+set backspace=2
 set noswapfile
 
 " Put plugins and dictionaries in this dir (also on Windows)
@@ -47,3 +54,5 @@ if has('persistent_undo')
     let &undodir = myUndoDir
     set undofile
 endif
+
+syntax on
