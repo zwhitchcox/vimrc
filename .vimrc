@@ -54,5 +54,5 @@ if has('persistent_undo')
     let &undodir = myUndoDir
     set undofile
 endif
-
 syntax on
+let NERDTreeIgnore = ['node_modules','bower_components', '.git', 'npm-debug.log']
